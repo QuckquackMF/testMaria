@@ -44,4 +44,4 @@ RUN groupadd --gid $USER_GID $USERNAME \
 EXPOSE 3306
 
 # Start MariaDB service and keep the container running
-CMD ["/bin/sh", "-c", "sudo service mariadb start && sleep infinity"]
+CMD ["mysqld"]
