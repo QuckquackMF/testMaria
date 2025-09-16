@@ -32,19 +32,11 @@ RUN groupadd --gid $USER_GID $USERNAME \
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Copy entrypoint script and make executable
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
 # Expose MariaDB port
 EXPOSE 3306
 
-# Use root to run entrypoint and start MariaDB
+# Default to root user so we can run service commands with sudo
 USER root
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-# Switch back to vscode user for normal terminal/shell usage
-USER $USERNAME
-
-# Default command to run MariaDB server
-CMD ["mysqld"]
+# Use default shell as entrypoint (Codespaces will override ENTRYPOINT/CMD)
+CMD ["bash"]
