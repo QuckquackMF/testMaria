@@ -3,12 +3,13 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "forwardPorts": [6969],
+    "forwardPorts": [3306],
     "customizations": {
         "vscode": {
             "extensions": [
                 "ms-mssql.mssql",
-                "ms-python.python"
+                "ms-python.python",
+                "dbaeumer.vscode-eslint"
             ]
         }
     }
