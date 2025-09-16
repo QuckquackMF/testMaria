@@ -4,7 +4,7 @@ FROM node:18-bullseye-slim
 # Install a specific version of npm
 # Note: npm version 11.6 is very old and not officially supported. 
 # This command is for illustration purposes.
-RUN npm install -g npm@11.6.0
+
 
 # Install MariaDB server and client
 # The Node.js image is based on Debian, so we can use apt-get
