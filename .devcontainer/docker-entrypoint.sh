@@ -1,16 +1,16 @@
 #!/bin/bash
 set -e
 
-# Ensure runtime directory exists with correct permissions
+# Ensure runtime directory exists with correct ownership
 mkdir -p /run/mysqld
 chown mysql:mysql /run/mysqld
 
-# Initialize DB if not already initialized
+# Initialize database if not initialized yet
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initializing MariaDB data directory..."
-    mysqld --initialize-insecure --user=mysql
-    echo "MariaDB initialized."
+  echo "Initializing MariaDB data directory..."
+  mysqld --initialize-insecure --user=mysql
+  echo "MariaDB data directory initialized."
 fi
 
-# Start the MariaDB server in foreground
+# Start MariaDB server in foreground (keeps container alive)
 exec mysqld
