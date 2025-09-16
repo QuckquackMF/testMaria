@@ -7,7 +7,8 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-mssql.mssql"
+                "ms-mssql.mssql",
+                "ms-python.python"
             ]
         }
     }
