@@ -1,13 +1,11 @@
-# Start from a Node.js image that also includes Python
-FROM node:18-bullseye-slim
+FROM mcr.microsoft.com/devcontainers/universal:2
 
-# Install MariaDB server, client, and Python debugger
-# The Node.js image is based on Debian, so we can use apt-get
+# Install MariaDB server and client and fix the libicu dependency
 RUN apt-get update && apt-get -y install mariadb-server mariadb-client libicu-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install the Python debugger
-RUN pip install debugpy
+# The Universal image is already configured to run as a non-root user.
+# You don't need to create one.
 
-# Run MariaDB on container start
-CMD ["sudo", "service", "mariadb", "start"]
+# Start MariaDB service and keep container running
+CMD ["sudo", "service", "mariadb", "start", "&&", "sleep", "infinity"]
