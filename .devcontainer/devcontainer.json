@@ -1,9 +1,10 @@
 {
-    "name": "MariaDB Devcontainer (Simple)",
+    "name": "Custom MariaDB Devcontainer",
     "build": {
         "dockerfile": "Dockerfile"
     },
     "forwardPorts": [3306],
+    "remoteUser": "vscode",
     "customizations": {
         "vscode": {
             "extensions": [
