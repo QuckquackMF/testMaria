@@ -6,16 +6,8 @@
   "forwardPorts": [3306],
   "remoteUser": "vscode",
   "postStartCommand": [
-  // Ensure MySQL runtime directory exists and has correct permissions
-  "sudo mkdir -p /var/run/mysqld && sudo chown mysql:mysql /var/run/mysqld",
-
-  // Start mysqld in background (don't crash container if it fails once)
-  "sudo sh -c 'mysqld --user=mysql --datadir=/var/lib/mysql --bind-address=0.0.0.0 > /tmp/mysqld.log 2>&1 &'",
-  
-  // Wait until mysqld is alive, retry up to 30 times
-  "bash -c 'for i in {1..30}; do if mysqladmin ping --silent; then exit 0; fi; sleep 1; done; echo \"MariaDB failed to start\"; cat /tmp/mysqld.log; exit 1'",
-
-  // Run your script only if DB is alive
+  "sudo service mariadb start",
+  "sleep 60",
   "python3 /workspace/.devcontainer/create_db.py"
   ],
   "customizations": {
