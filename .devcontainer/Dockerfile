@@ -38,5 +38,5 @@ EXPOSE 3306
 # Default to root user so we can run service commands with sudo
 USER root
 
-# Use default shell as entrypoint (Codespaces will override ENTRYPOINT/CMD)
-CMD ["bash"]
+# Start MariaDB using the mysqld command directly
+CMD ["mysqld"]
