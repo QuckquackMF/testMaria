@@ -39,4 +39,4 @@ EXPOSE 3306
 USER root
 
 # Start MariaDB using the mysqld command directly
-CMD ["mysqld"]
+CMD ["mysqld_safe"]
