@@ -6,7 +6,7 @@
   "forwardPorts": [3306],
   "remoteUser": "vscode",
   "postStartCommand": [
-    "sudo service mariadb start", 
+    "nohup mysqld &", 
     "python3 /workspace/.devcontainer/create_db.py"
   ],
   "customizations": {
