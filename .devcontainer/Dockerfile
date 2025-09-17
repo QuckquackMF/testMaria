@@ -1,7 +1,6 @@
-# Start from a minimal Debian base image
 FROM debian:bullseye-slim
 
-# Install system dependencies and tools
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     sudo \
     curl \
@@ -16,13 +15,16 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up locale to prevent errors with some tools
+# Generate locale
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+
+# Initialize MariaDB database directory (important!)
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 # Install mysql-connector for Python
 RUN pip3 install mysql-connector-python
 
-# Create non-root vscode user
+# Create vscode user
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -35,8 +37,5 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # Expose MariaDB port
 EXPOSE 3306
 
-# Default to root user so we can run service commands with sudo
-USER root
-
-# Start MariaDB using the mysqld command directly
-CMD ["mysqld_safe"]
+# Default command just keeps container alive
+CMD ["sleep", "infinity"]
