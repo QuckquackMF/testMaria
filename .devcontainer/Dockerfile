@@ -18,17 +18,16 @@ RUN apt-get update && apt-get install -y \
 # Generate locale
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
-# Initialize MariaDB database directory (important!)
+# Initialize MariaDB database directory
 RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 # Install mysql-connector for Python
 RUN pip3 install mysql-connector-python
 
-# Create vscode user
+# Create non-root vscode user
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-
 RUN groupadd --gid $USER_GID $USERNAME \
   && useradd -m -s /bin/bash --uid $USER_UID --gid $USER_GID $USERNAME \
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
@@ -37,5 +36,5 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # Expose MariaDB port
 EXPOSE 3306
 
-# Default command just keeps container alive
+# Keep container alive by default
 CMD ["sleep", "infinity"]
