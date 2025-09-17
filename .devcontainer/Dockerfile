@@ -2,7 +2,7 @@
 FROM debian:bullseye-slim
 
 # Install system dependencies and tools
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
     sudo \
     curl \
     gnupg \
