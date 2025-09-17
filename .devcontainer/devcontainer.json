@@ -6,8 +6,14 @@
   "forwardPorts": [3306],
   "remoteUser": "vscode",
   "postStartCommand": [
-  "bash -c 'until mysqladmin ping --silent; do sleep 1; done'",
-  "python3 /workspace/.devcontainer/create_db.py"
+     // Start MariaDB
+     "sudo mysqld_safe --datadir=/var/lib/mysql &",
+  
+     // Wait until it's ready
+     "bash -c 'until mysqladmin ping --silent; do sleep 1; done'",
+  
+     // Run your script
+     "python3 /workspace/.devcontainer/create_db.py"
   ],
   "customizations": {
     "vscode": {
