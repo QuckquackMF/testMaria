@@ -5,7 +5,10 @@
   },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
-  "postStartCommand": "python3 /workspace/create_db.py",
+  "postStartCommand": [
+    "sudo service mariadb start", 
+    "python3 /workspace/.devcontainer/create_db.py"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
