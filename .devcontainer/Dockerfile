@@ -2,7 +2,7 @@
 FROM debian:bullseye-slim
 
 # Install system dependencies and tools
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     sudo \
     curl \
     gnupg \
@@ -19,8 +19,8 @@ RUN apt-get install -y \
 # Set up locale to prevent errors with some tools
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
-# Install debugpy for Python debugging
-RUN pip3 install debugpy
+# Install mysql-connector for Python
+RUN pip3 install mysql-connector-python
 
 # Create non-root vscode user
 ARG USERNAME=vscode
