@@ -1,3 +1,4 @@
+# Base image
 FROM debian:bullseye-slim
 
 # Install dependencies
@@ -12,11 +13,15 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     python3 \
     python3-pip \
+    nodejs \
     netcat \
     && rm -rf /var/lib/apt/lists/*
 
 # Generate locale
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+
+# Install Python MySQL connector
+RUN pip3 install mysql-connector-python
 
 # Create non-root vscode user
 ARG USERNAME=vscode
@@ -27,14 +32,20 @@ RUN groupadd --gid $USER_GID $USERNAME \
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Copy Python script
-COPY .devcontainer/create_db.py /workspace/.devcontainer/create_db.py
-
-# Install Python connector
-RUN pip3 install mysql-connector-python
+# Set up MariaDB runtime folder
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
 # Expose MariaDB port
 EXPOSE 3306
 
-# Start MariaDB and keep container alive
-CMD ["/bin/bash", "-c", "mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld && mysqld_safe --datadir=/var/lib/mysql & sleep 5 && python3 /workspace/.devcontainer/create_db.py && tail -f /dev/null"]
+# Copy Python script and requirements
+COPY create_db.py /create_db.py
+COPY requirements.txt /requirements.txt
+RUN pip3 install -r /requirements.txt
+
+# Initialize MariaDB and create database on container start
+CMD mysqld_safe --datadir=/var/lib/mysql & \
+    echo "Waiting for MariaDB to start..." && \
+    for i in {1..30}; do nc -z localhost 3306 && break || sleep 1; done && \
+    python3 /create_db.py && \
+    tail -f /dev/null
