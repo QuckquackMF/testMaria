@@ -1,8 +1,8 @@
 {
-  "name": "MariaDB Devcontainer with Node and Python",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "dev",
-  "workspaceFolder": "/workspace",
+  "name": "MariaDB + Devcontainer Single Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
   "postStartCommand": [
