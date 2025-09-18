@@ -1,13 +1,10 @@
 {
-  "name": "MariaDB + Devcontainer Single Container",
+  "name": "MariaDB Devcontainer",
   "build": {
     "dockerfile": "Dockerfile"
   },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
- "postStartCommand": [
-    "python3 .devcontainer/create_db.py"
-  ],
   "customizations": {
     "vscode": {
       "extensions": [
