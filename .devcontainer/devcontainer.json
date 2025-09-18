@@ -3,5 +3,5 @@
   "build": { "dockerfile": "Dockerfile" },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
-  "postStartCommand": "sudo /usr/bin/mysqld_safe --datadir=/var/lib/mysql > /tmp/mysqld.log 2>&1 & sleep 5 && python3 .devcontainer/create_db.py"
+  "postStartCommand": "sudo service mariadb start && python3 .devcontainer/create_db.py"
 }
