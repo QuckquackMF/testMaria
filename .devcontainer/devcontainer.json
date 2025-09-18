@@ -1,17 +1,7 @@
 {
   "name": "MariaDB Devcontainer",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "build": { "dockerfile": "Dockerfile" },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-mssql.mssql",
-        "ms-python.python",
-        "dbaeumer.vscode-eslint"
-      ]
-    }
-  }
+  "postStartCommand": "sudo mysqld_safe --datadir=/var/lib/mysql & sleep 5 && python3 .devcontainer/create_db.py"
 }
