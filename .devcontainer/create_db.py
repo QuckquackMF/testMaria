@@ -1,4 +1,3 @@
-# .devcontainer/create_db.py
 import mysql.connector
 import time
 
