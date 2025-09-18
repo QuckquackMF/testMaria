@@ -8,8 +8,8 @@ print("⏳ Waiting for database to be ready...")
 
 while True:
     try:
-        conn = mysql.connector.connect(
-            user=user,
+       conn = mysql.connector.connect(
+            user="root",
             unix_socket="/run/mysqld/mysqld.sock"
         )
         break
