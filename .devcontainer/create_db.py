@@ -1,12 +1,12 @@
 import mysql.connector
 import time
 
-host = "127.0.0.1"  # Use TCP
+host = "127.0.0.1"
 user = "root"
-password = ""  # Change if you set a root password
+password = "root"
 database = "mydatabase"
 
-print("⏳ Waiting for MariaDB to be ready... (retrying every 30 seconds)")
+print("⏳ Waiting for database to be ready...")
 
 while True:
     try:
@@ -15,14 +15,14 @@ while True:
             user=user,
             password=password
         )
-        print("✅ Connected to MariaDB!")
         break
-    except mysql.connector.Error as e:
-        print(f"Waiting for database... ({e})")
-        time.sleep(30)  # wait 30 seconds before retrying
+    except mysql.connector.Error:
+        print("Waiting for database... retrying in 30 seconds")
+        time.sleep(30)
 
 cursor = conn.cursor()
 cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
 print(f"✅ Database '{database}' created or already exists.")
+
 cursor.close()
 conn.close()
