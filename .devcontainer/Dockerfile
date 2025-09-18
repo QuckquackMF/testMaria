@@ -1,4 +1,3 @@
-# .devcontainer/Dockerfile
 FROM ubuntu:22.04
 
 # Install MariaDB, Python, and tools
@@ -29,6 +28,9 @@ RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
 # Copy your database creation script
 COPY create_db.py /workspace/.devcontainer/create_db.py
+
+# Expose MariaDB port
+EXPOSE 3306
 
 # Switch to vscode user
 USER vscode
