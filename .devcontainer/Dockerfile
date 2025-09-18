@@ -29,6 +29,5 @@ RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 # Copy your database creation script
 COPY create_db.py /workspace/.devcontainer/create_db.py
 
-# Switch to vscode user
 USER vscode
 WORKDIR /workspace
