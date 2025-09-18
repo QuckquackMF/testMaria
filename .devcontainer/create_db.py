@@ -1,18 +1,23 @@
 import mysql.connector
 import time
 
-# Wait a few seconds to let MariaDB start
-time.sleep(5)
+host = "localhost"
+user = "root"
+password = "root"
+database = "mydatabase"
 
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=""
-)
+for _ in range(30):
+    try:
+        conn = mysql.connector.connect(host=host, user=user, password=password)
+        break
+    except mysql.connector.Error:
+        print("Waiting for MariaDB...")
+        time.sleep(2)
+else:
+    raise Exception("Database not ready after 30 attempts.")
 
 cursor = conn.cursor()
-cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
-print("✅ Database 'mydatabase' created or already exists.")
-
+cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
+print(f"✅ Database '{database}' created or already exists.")
 cursor.close()
 conn.close()
