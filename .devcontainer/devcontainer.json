@@ -5,8 +5,8 @@
   },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
-  "postStartCommand": [
-    "python3 /workspace/.devcontainer/create_db.py"
+ "postStartCommand": [
+    "python3 .devcontainer/create_db.py"
   ],
   "customizations": {
     "vscode": {
