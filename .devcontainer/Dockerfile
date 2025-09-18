@@ -26,11 +26,8 @@ RUN groupadd --gid 1000 vscode \
 # Prepare MariaDB runtime directory
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
-# Copy your database creation script
+# Copy database creation script
 COPY create_db.py /workspace/.devcontainer/create_db.py
-
-# Expose MariaDB port
-EXPOSE 3306
 
 # Switch to vscode user
 USER vscode
