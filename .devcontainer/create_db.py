@@ -1,14 +1,12 @@
+# .devcontainer/create_db.py
 import mysql.connector
 import time
-
-user = "root"
-database = "mydatabase"
 
 print("⏳ Waiting for database to be ready...")
 
 while True:
     try:
-       conn = mysql.connector.connect(
+        conn = mysql.connector.connect(
             user="root",
             unix_socket="/run/mysqld/mysqld.sock"
         )
@@ -18,8 +16,8 @@ while True:
         time.sleep(5)
 
 cursor = conn.cursor()
-cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
-print(f"✅ Database '{database}' created or already exists.")
+cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
+print("✅ Database 'mydatabase' created or already exists.")
 
 cursor.close()
 conn.close()
