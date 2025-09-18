@@ -1,13 +1,13 @@
 import mysql.connector
 import time
 
-print("⏳ Waiting for database to be ready...")
+print("⏳ Waiting for MariaDB to be ready...")
 
 while True:
     try:
         conn = mysql.connector.connect(
             user="root",
-            unix_socket="/run/mysqld/mysqld.sock"
+            unix_socket="/run/mysqld/mysqld.sock"  # use the socket
         )
         break
     except mysql.connector.Error:
