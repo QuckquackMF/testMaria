@@ -1,51 +1,35 @@
-# Base image
-FROM debian:bullseye-slim
+# .devcontainer/Dockerfile
+FROM ubuntu:22.04
 
-# Install dependencies
+# Install MariaDB, Python, and tools
 RUN apt-get update && apt-get install -y \
-    sudo \
-    curl \
-    gnupg \
-    procps \
-    locales \
     mariadb-server \
-    mariadb-client \
-    libicu-dev \
     python3 \
     python3-pip \
-    nodejs \
+    locales \
+    sudo \
     netcat \
     && rm -rf /var/lib/apt/lists/*
 
-# Generate locale
+# Set locale
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
-# Install Python MySQL connector
-RUN pip3 install mysql-connector-python
-
-# Create non-root vscode user
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-RUN groupadd --gid $USER_GID $USERNAME \
-  && useradd -m -s /bin/bash --uid $USER_UID --gid $USER_GID $USERNAME \
-  && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
-  && chmod 0440 /etc/sudoers.d/$USERNAME
-
-# Set up MariaDB runtime folder
-RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
-
-# Expose MariaDB port
-EXPOSE 3306
-
-# Copy Python script and requirements
-COPY create_db.py /create_db.py
+# Install Python dependencies
 COPY requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
 
-# Initialize MariaDB and create database on container start
-CMD mysqld_safe --datadir=/var/lib/mysql & \
-    echo "Waiting for MariaDB to start..." && \
-    for i in {1..30}; do nc -z localhost 3306 && break || sleep 1; done && \
-    python3 /create_db.py && \
-    tail -f /dev/null
+# Create vscode user
+RUN groupadd --gid 1000 vscode \
+    && useradd -m -s /bin/bash --uid 1000 --gid 1000 vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
+    && chmod 0440 /etc/sudoers.d/vscode
+
+# Prepare MariaDB runtime directory
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
+
+# Copy your database creation script
+COPY create_db.py /workspace/.devcontainer/create_db.py
+
+# Switch to vscode user
+USER vscode
+WORKDIR /workspace
