@@ -3,7 +3,7 @@ import time
 
 host = "localhost"
 user = "root"
-password = ""
+password = "root"
 database = "mydatabase"
 
 # Wait until MariaDB is ready
