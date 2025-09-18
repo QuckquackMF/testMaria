@@ -23,9 +23,6 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 COPY requirements.txt /tmp/
 RUN pip3 install -r /tmp/requirements.txt
 
-# Initialize MariaDB data directory
-RUN mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
-
 # Create non-root vscode user
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -39,4 +36,4 @@ RUN groupadd --gid $USER_GID $USERNAME \
 EXPOSE 3306
 
 # Start MariaDB in foreground, keep container alive
-CMD ["bash", "-c", "mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld && exec mysqld --user=mysql --datadir=/var/lib/mysql"]
+CMD ["bash", "-c", "mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld && exec mysqld --user=mysql"]
