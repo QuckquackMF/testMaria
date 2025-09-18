@@ -1,9 +1,7 @@
 import mysql.connector
 import time
 
-host = "127.0.0.1"
 user = "root"
-password = "root"
 database = "mydatabase"
 
 print("⏳ Waiting for database to be ready...")
@@ -11,9 +9,8 @@ print("⏳ Waiting for database to be ready...")
 while True:
     try:
         conn = mysql.connector.connect(
-            host=host,
             user=user,
-            password=password
+            unix_socket="/run/mysqld/mysqld.sock"
         )
         break
     except mysql.connector.Error:
