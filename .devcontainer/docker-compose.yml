@@ -1,7 +1,9 @@
 version: "3.8"
+
 services:
   db:
     image: mariadb:10.11
+    container_name: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: mydatabase
@@ -11,11 +13,12 @@ services:
       - db_data:/var/lib/mysql
 
   dev:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: devcontainer
     volumes:
       - .:/workspace
-    ports:
-      - "5585:5585"
     depends_on:
       - db
     command: sleep infinity
