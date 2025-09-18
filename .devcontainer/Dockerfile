@@ -7,8 +7,6 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     procps \
     locales \
-    mariadb-server \
-    mariadb-client \
     libicu-dev \
     python3 \
     python3-pip \
@@ -18,15 +16,6 @@ RUN apt-get update && apt-get install -y \
 
 # Generate locale
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
-
-# Initialize MariaDB database directory
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
-
-# Secure MariaDB root user (set password = root)
-RUN mysqld_safe --datadir=/var/lib/mysql & \
-    sleep 5 && \
-    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;" && \
-    mysqladmin -uroot -proot shutdown
 
 # Install Python requirements
 COPY requirements.txt /tmp/
@@ -41,8 +30,4 @@ RUN groupadd --gid $USER_GID $USERNAME \
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Expose MariaDB port
-EXPOSE 3306
-
-# Keep container alive
 CMD ["sleep", "infinity"]
