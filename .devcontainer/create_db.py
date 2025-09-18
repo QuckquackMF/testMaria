@@ -3,7 +3,7 @@ import time
 
 host = "127.0.0.1"
 user = "root"
-password = "root"
+password = ""  # No password
 database = "mydatabase"
 
 print("⏳ Waiting for database to be ready...")
