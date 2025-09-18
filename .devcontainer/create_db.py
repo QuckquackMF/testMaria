@@ -1,9 +1,8 @@
 import mysql.connector
 import time
 
-host = "127.0.0.1"
 user = "root"
-password = "root"
+unix_socket = "/run/mysqld/mysqld.sock"  # Unix socket path
 database = "mydatabase"
 
 print("⏳ Waiting for database to be ready...")
@@ -11,14 +10,13 @@ print("⏳ Waiting for database to be ready...")
 while True:
     try:
         conn = mysql.connector.connect(
-            host=host,
             user=user,
-            password=password
+            unix_socket=unix_socket
         )
         break
     except mysql.connector.Error:
-        print("Waiting for database... retrying in 30 seconds")
-        time.sleep(30)
+        print("Waiting for database... retrying in 5 seconds")
+        time.sleep(5)
 
 cursor = conn.cursor()
 cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
